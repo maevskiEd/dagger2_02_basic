@@ -9,10 +9,14 @@ import com.example.dagger2_02_basic.data.NewsService
 import retrofit2.Retrofit
 import retrofit2.create
 
+
+//можно NetworkModule добавить в компонент
+//@Component(modules = [AppModule::class, NetworkModule::class])
 @Component(modules = [AppModule::class])
 interface AppComponent
 
-@Module
+//а можно NetworkModule добавить в верхний модуль
+@Module(includes = [NetworkModule::class])
 class AppModule {
 
     @Provides
@@ -23,16 +27,21 @@ class AppModule {
         return NewsRepositoryImpl(newsService, analytics)
     }
 
+
+
+    @Provides
+    fun provideAnalytics(): Analytics {
+        return Analytics()
+    }
+}
+
+@Module
+class NetworkModule {
     @Provides
     fun provideProductionNewsService(): NewsService {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://androidbrodcast.dev")
             .build()
         return retrofit.create()
-    }
-
-    @Provides
-    fun provideAnalytics(): Analytics {
-        return Analytics()
     }
 }

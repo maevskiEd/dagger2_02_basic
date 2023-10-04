@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package dev.androidbroadcast.dagger.data
+package com.example.dagger2_02_basic.data
 
 import retrofit2.http.GET
 import retrofit2.http.Path

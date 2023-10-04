@@ -1,7 +1,8 @@
-package dev.androidbroadcast.dagger
+package com.example.dagger2_02_basic
 
 import android.app.Application
 import android.content.Context
+import dev.androidbroadcast.dagger.DaggerAppComponent
 
 class MainApp : Application() {
 

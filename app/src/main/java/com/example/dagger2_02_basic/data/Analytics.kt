@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_PARAMETER")
 
-package dev.androidbroadcast.dagger.data
+package com.example.dagger2_02_basic.data
 
 import javax.inject.Inject
 

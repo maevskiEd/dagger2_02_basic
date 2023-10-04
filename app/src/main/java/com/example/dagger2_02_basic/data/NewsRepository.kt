@@ -1,8 +1,6 @@
 @file:Suppress("unused")
 
-package dev.androidbroadcast.dagger.data
-
-import javax.inject.Inject
+package com.example.dagger2_02_basic.data
 
 //Репозиторий обертка для получения данных
 //реализация + интерфейс

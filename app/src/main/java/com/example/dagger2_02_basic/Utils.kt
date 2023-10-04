@@ -1,4 +1,4 @@
-package dev.androidbroadcast.dagger
+package com.example.dagger2_02_basic
 
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment

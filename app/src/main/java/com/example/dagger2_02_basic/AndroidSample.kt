@@ -1,8 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE", "unused", "UNUSED_PARAMETER", "MemberVisibilityCanBePrivate")
 
-package dev.androidbroadcast.dagger
+package com.example.dagger2_02_basic
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -17,17 +16,14 @@ import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewModelScope
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.dagger2_02_basic.R
 import com.example.dagger2_02_basic.databinding.FragmentNewsDetailsBinding
-import dev.androidbroadcast.dagger.data.Analytics
-import dev.androidbroadcast.dagger.data.News
-import dev.androidbroadcast.dagger.data.NewsRepository
+import com.example.dagger2_02_basic.data.News
+import com.example.dagger2_02_basic.data.NewsRepository
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 

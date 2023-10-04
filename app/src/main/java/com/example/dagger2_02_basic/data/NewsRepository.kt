@@ -2,6 +2,8 @@
 
 package com.example.dagger2_02_basic.data
 
+import javax.inject.Inject
+
 //Репозиторий обертка для получения данных
 //реализация + интерфейс
 interface NewsRepository {
@@ -9,7 +11,7 @@ interface NewsRepository {
     suspend fun getNews(newsId: String): News
 }
 
-class NewsRepositoryImpl (
+class NewsRepositoryImpl @Inject constructor(
     private val newsService: NewsService,
     private val analytics: Analytics,
 ) : NewsRepository {

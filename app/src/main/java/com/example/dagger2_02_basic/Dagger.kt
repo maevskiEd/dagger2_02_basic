@@ -4,6 +4,7 @@ import dagger.Component
 import dagger.Module
 import dagger.Provides
 import com.example.dagger2_02_basic.data.Analytics
+import com.example.dagger2_02_basic.data.NewsRepository
 import com.example.dagger2_02_basic.data.NewsRepositoryImpl
 import com.example.dagger2_02_basic.data.NewsService
 import retrofit2.Retrofit
@@ -19,6 +20,21 @@ interface AppComponent
 @Module(includes = [NetworkModule::class])
 class AppModule {
 
+    //Вместо этого провайд можно использовать bind, которая указывает что можно делать в случаях,
+    //когда запрашивается один тип, а надо вернуть другой. Для этого надо сделать класс,
+    //в котором можно декларировать абстрактные методы
+    //abstraсt class AppModule {
+
+/*    @Binds
+    adstract fun bindNewsRepositoryImpl_to_NewsRepository(
+        newsRepositoryImpl: NewsRepositoryImpl
+    ): NewsRepository*/
+
+    @Provides
+    fun provideNewsRepository(newsRepositoryImpl: NewsRepositoryImpl): NewsRepository {
+        return  newsRepositoryImpl
+    }
+
     @Provides
     fun provideNewsRepositoryImpl(
         newsService: NewsService,
@@ -26,7 +42,6 @@ class AppModule {
     ): NewsRepositoryImpl {
         return NewsRepositoryImpl(newsService, analytics)
     }
-
 
 
     @Provides

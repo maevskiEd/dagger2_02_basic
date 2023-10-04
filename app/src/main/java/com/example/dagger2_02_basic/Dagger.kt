@@ -7,6 +7,7 @@ import com.example.dagger2_02_basic.data.Analytics
 import com.example.dagger2_02_basic.data.NewsRepository
 import com.example.dagger2_02_basic.data.NewsRepositoryImpl
 import com.example.dagger2_02_basic.data.NewsService
+import dagger.Binds
 import retrofit2.Retrofit
 import retrofit2.create
 
@@ -17,24 +18,8 @@ import retrofit2.create
 interface AppComponent
 
 //а можно NetworkModule добавить в верхний модуль
-@Module(includes = [NetworkModule::class])
+@Module(includes = [NetworkModule::class, AppBindModule::class])
 class AppModule {
-
-    //Вместо этого провайд можно использовать bind, которая указывает что можно делать в случаях,
-    //когда запрашивается один тип, а надо вернуть другой. Для этого надо сделать класс,
-    //в котором можно декларировать абстрактные методы
-    //abstraсt class AppModule {
-
-/*    @Binds
-    adstract fun bindNewsRepositoryImpl_to_NewsRepository(
-        newsRepositoryImpl: NewsRepositoryImpl
-    ): NewsRepository*/
-
-    @Provides
-    fun provideNewsRepository(newsRepositoryImpl: NewsRepositoryImpl): NewsRepository {
-        return  newsRepositoryImpl
-    }
-
     @Provides
     fun provideNewsRepositoryImpl(
         newsService: NewsService,
@@ -59,4 +44,15 @@ class NetworkModule {
             .build()
         return retrofit.create()
     }
+}
+
+//В идеале надо использовать abstract, но можно использовать интерфейс
+@Module
+//abstract class AppBindModule {
+interface AppBindModule {
+    @Binds
+//    abstract fun bindNewsRepositoryImpl_to_NewsRepository(
+    fun bindNewsRepositoryImpl_to_NewsRepository(
+        newsRepositoryImpl: NewsRepositoryImpl
+    ): NewsRepository
 }

@@ -14,16 +14,18 @@ import javax.inject.Named
 import javax.inject.Qualifier
 
 @Component(modules = [AppModule::class])
-interface AppComponent {
-    fun inject(activity: MainActivity)
-    fun inject(fragment: NewsDetailsFragment)
-}
-
-@Module(includes = [NetworkModule::class, AppBindModule::class])
-class AppModule
+interface AppComponent
 
 @Module
-class NetworkModule {
+class AppModule {
+
+    @Provides
+    fun provideNewsRepositoryImpl(
+        newsService: NewsService,
+        analytics: Analytics
+    ): NewsRepositoryImpl {
+        return NewsRepositoryImpl(newsService, analytics)
+    }
 
     @Provides
     fun provideProductionNewsService(): NewsService {
@@ -34,30 +36,7 @@ class NetworkModule {
     }
 
     @Provides
-    @Stage
-    fun provideStageNewsService(): NewsService {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://stage.androidbrodcast.dev")
-            .build()
-        return retrofit.create()
+    fun provideAnalytics(): Analytics {
+        return Analytics()
     }
 }
-
-@Module
-interface AppBindModule {
-
-    @Suppress("FunctionName")
-    @Binds
-    fun bindNewsRepositoryImpl_to_NewsRepository(
-        newsRepositoryImpl: NewsRepositoryImpl
-    ): NewsRepository
-}
-
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class Prod
-
-
-@Qualifier
-@Retention(AnnotationRetention.RUNTIME)
-annotation class Stage

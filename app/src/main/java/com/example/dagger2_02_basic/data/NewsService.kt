@@ -5,6 +5,7 @@ package dev.androidbroadcast.dagger.data
 import retrofit2.http.GET
 import retrofit2.http.Path
 
+//реализация с помощью Retrofit
 interface NewsService {
 
     @GET("news")

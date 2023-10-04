@@ -19,9 +19,6 @@ import androidx.lifecycle.viewModelScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.dagger2_02_basic.R
 import com.example.dagger2_02_basic.databinding.FragmentNewsDetailsBinding
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dev.androidbroadcast.dagger.data.Analytics
 import dev.androidbroadcast.dagger.data.News
 import dev.androidbroadcast.dagger.data.NewsRepository
@@ -36,7 +33,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appComponent.inject(this)
         with(supportFragmentManager) {
             if (isFragmentContainerEmpty(R.id.fragments)) {
                 commit {
@@ -50,11 +46,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         }
     }
 
-    @Inject
-    fun trackOnStart(analytics: Analytics) {
-        analytics.trackScreenShow()
-    }
-
     private companion object {
 
         private const val TOP_NEWS_ID = "top"
@@ -66,18 +57,7 @@ class NewsDetailsFragment : Fragment(R.layout.fragment_news_details) {
 
     private val viewBinding by viewBinding(FragmentNewsDetailsBinding::bind)
     private val newsId: String by stringArgs(ARG_NEWS_ID)
-    private val viewModel: NewsDetailsViewModel by viewModels {
-        factory.create(newsId)
-    }
-
-    // Lazy и Provider не работаю с зависимостями, которые используют Assisted Inject
-    @Inject
-    lateinit var factory: NewsDetailsViewModelFactory.Factory
-
-    override fun onAttach(context: Context) {
-        context.appComponent.inject(this)
-        super.onAttach(context)
-    }
+    private val viewModel: NewsDetailsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -118,8 +98,8 @@ class NewsDetailsViewModel(
             .shareIn(viewModelScope, SharingStarted.Lazily, replay = 1)
 }
 
-class NewsDetailsViewModelFactory @AssistedInject constructor(
-    @Assisted("newsId") private val newsId: String,
+class Factory (
+    private val newsId: String,
     private val newsRepository: NewsRepository,
 ) : ViewModelProvider.Factory {
 
@@ -127,11 +107,5 @@ class NewsDetailsViewModelFactory @AssistedInject constructor(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         require(modelClass == NewsDetailsViewModel::class)
         return NewsDetailsViewModel(newsId, newsRepository) as T
-    }
-
-    @AssistedFactory
-    interface Factory {
-
-        fun create(@Assisted("newsId") newsId: String): NewsDetailsViewModelFactory
     }
 }
